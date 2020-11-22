@@ -1,5 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  link(rel='stylesheet', href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css')
+  div(style='text-align: center')
+    h1= title
+    p La primera comunidad online de ciclistas urbanos.
+    button(type='button').btn.btn-primary Comenzar
+    div#mapa Mapa
+  script(type='text/javascript', src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js')
+  script(type='text/javascript', src='./js/index.js')

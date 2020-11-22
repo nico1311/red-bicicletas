@@ -1,7 +1,32 @@
 doctype html
 html
   head
+    meta(charset='utf-8')
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    link(rel='stylesheet', href='./bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='./css/style.css')
   body
-    block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      a.navbar-brand(href='#') #{title}
+      button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item.active
+            a.nav-link(href='#')
+              | Bicicletas
+              span.sr-only (current)
+          li.nav-item
+            a.nav-link(href='#') Acerca de
+          li.nav-item.dropdown
+            a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+              | Enlaces
+            .dropdown-menu(aria-labelledby='navbarDropdown')
+              a.dropdown-item(href='#') Ayuda
+              a.dropdown-item(href='#') Contacto
+    div.container-fluid
+      block content
+    script(type='text/javascript', src='./js/jquery-3.5.1.min.js')
+    script(type='text/javascript', src='./bootstrap/js/bootstrap.bundle.min.js')
+    

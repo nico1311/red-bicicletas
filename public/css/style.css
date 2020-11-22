@@ -1,0 +1,8 @@
+.container-fluid {
+    padding-top: 1em
+}
+
+#mapa {
+    margin: 1em auto;
+    height: 600px
+}
