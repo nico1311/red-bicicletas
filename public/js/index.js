@@ -6,5 +6,13 @@ L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
   subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 }).addTo(map);
 
-L.marker([-34.6086268, -58.3922607]).addTo(map);
-L.marker([-34.6122428, -58.3984727]).addTo(map);
+$.ajax({
+  dataType: 'json',
+  url: '/api/bicicletas',
+}).then((result) => {
+  result.bicicletas.forEach((bici) => {
+    L.marker(bici.ubicacion, {
+      title: bici.id
+    }).addTo(map);
+  });
+});

@@ -45,9 +45,7 @@ exports.bicicleta_update_post = (req, res) => {
   biciAEditar.id = parseInt(req.body.id);
   biciAEditar.color = req.body.color;
   biciAEditar.modelo = req.body.modelo;
-  biciAEditar.ubicacion = [req.body.lat, req.body.lng]
-  let bici = new Bicicleta(parseInt(req.body.id), req.body.color, req.body.modelo);
-  bici.ubicacion = [req.body.lat, req.body.lng];
+  biciAEditar.ubicacion = [req.body.lat, req.body.lng];
 
   res.redirect('/bicicletas');
 }
