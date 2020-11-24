@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  a(href='/bicicletas')| &lt;Volver
+  h2 Agregar bicicleta
+  br
+
+  form(method='post', action='/bicicletas/create')
+    div.form-row
+      div.form-group.col-auto
+        label(for='id')| ID
+        input#id.form-control(type='text', name='id', placeholder='ID')
+    div.form-row
+      div.form-group.col-auto
+        label(for='color')| Color
+        input#id.form-control(type='text', name='color', placeholder='Color')
+    div.form-row
+      div.form-group.col-auto
+        label(for='modelo')| Modelo
+        input#id.form-control(type='text', name='modelo', placeholder='Modelo')
+    div.form-row
+      div.form-group.col-auto
+        label(for='lat')| Latitud
+        input#id.form-control(type='text', name='lat', placeholder='Latitud')
+      div.form-group.col-auto
+        label(for='lng')| Longitud
+        input#id.form-control(type='text', name='lng', placeholder='Longitud')
+    div.form-row
+      div.form-group.col-auto
+        button.btn.btn-primary.mb-2(type='submit')| Agregar
