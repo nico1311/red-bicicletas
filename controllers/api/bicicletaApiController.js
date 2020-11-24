@@ -23,20 +23,30 @@ exports.bicicleta_create = (req, res) => {
   res.status(201).json(bici);
 }
 
-exports.bicicleta_delete = (req, res) => {
-  Bicicleta.removeById(parseInt(req.params.id));
+exports.bicicleta_update = (req, res) => {
+  try {
+    let biciAEditar = Bicicleta.findById(parseInt(req.params.id));
 
-  res.status(204).end();
+    if (req.body.id) biciAEditar.id = parseInt(req.body.id);
+    if (req.body.color) biciAEditar.color = req.body.color;
+    if (req.body.modelo) biciAEditar.modelo = req.body.modelo;
+    if (req.body.lat) biciAEditar.ubicacion[0] = req.body.lat;
+    if (req.body.lng) biciAEditar.ubicacion[1] = req.body.lng;
+
+    res.status(200).json(biciAEditar);
+  } catch (err) {
+    res.status(404).end();
+  }
 }
 
-exports.bicicleta_update = (req, res) => {
-  let biciAEditar = Bicicleta.findById(parseInt(req.params.id));
+exports.bicicleta_delete = (req, res) => {
+  try {
+    Bicicleta.findById(parseInt(req.params.id));
+    Bicicleta.removeById(parseInt(req.params.id));
 
-  if (req.body.id) biciAEditar.id = parseInt(req.body.id);
-  if (req.body.color) biciAEditar.color = req.body.color;
-  if (req.body.modelo) biciAEditar.modelo = req.body.modelo;
-  if (req.body.lat) biciAEditar.ubicacion[0] = req.body.lat;
-  if (req.body.lng) biciAEditar.ubicacion[1] = req.body.lng;
+    res.status(204).end(); 
+  } catch (err) {
+    res.status(404).end();
+  }
 
-  res.status(200).json(biciAEditar);
 }
