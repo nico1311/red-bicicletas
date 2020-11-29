@@ -34,10 +34,4 @@ Bicicleta.removeById = function (id) {
   }
 }
 
-let a = new Bicicleta(1, 'Verde', 'Urbana', [-34.6086268, -58.3922607]),
-  b = new Bicicleta(2, 'Azul', 'Urbana', [-34.6122428, -58.3984727]);
-
-Bicicleta.add(a);
-Bicicleta.add(b);
-
 module.exports = Bicicleta;
