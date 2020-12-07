@@ -17,13 +17,13 @@ block content
       each bici in bicis
         tr
           th(scope='row')
-            = bici.id
+            = bici.biciId
           td= bici.color
           td= bici.modelo
           td= bici.ubicacion
           td
-            a.btn.btn-primary(href='/bicicletas/'+ bici.id +'/update')| Editar
+            a.btn.btn-primary(href='/bicicletas/'+ bici.biciId +'/update')| Editar
           td
-             form.inline(method='post', action='/bicicletas/'+ bici.id +'/delete')
-              input(type='hidden', name='id', value=bici.id)
+             form.inline(method='post', action='/bicicletas/'+ bici.biciId +'/delete')
+              input(type='hidden', name='id', value=bici.biciId)
               button.btn.btn-danger(type='submit', name='submit')| Eliminar

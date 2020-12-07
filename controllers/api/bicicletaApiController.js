@@ -1,52 +1,66 @@
 const Bicicleta = require('../../models/bicicleta');
 
 exports.bicicleta_list = (req, res) => {
-  res.status(200).json({
-    bicicletas: Bicicleta.allBicis
+  Bicicleta.allBicis((err, bicis) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).end();
+    }
+    res.status(200).json({
+      bicicletas: bicis
+    });
   });
 }
 
 exports.bicicleta_get = (req, res) => {
-  try {
-    let bici = Bicicleta.findById(parseInt(req.params.id));
-    res.status(200).json(bici);
-  } catch (err) {
-    res.status(404).end();
-  }
+  Bicicleta.findById(parseInt(req.params.id), (err, result) => {
+    if (err) return res.status(err.name === 'DocumentNotFoundError' ? 404: 500).end();
+    res.status(200).json(result);
+  });
 }
 
 exports.bicicleta_create = (req, res) => {
-  let bici = new Bicicleta(parseInt(req.body.id), req.body.color, req.body.modelo);
-  bici.ubicacion = [req.body.lat, req.body.lng];
-  Bicicleta.add(bici);
+  const bici = new Bicicleta({
+    biciId: req.body.id,
+    color: req.body.color,
+    modelo: req.body.modelo,
+    ubicacion: [
+      req.body.lat.replace(/,/g, '.'),
+      req.body.lng.replace(/,/g, '.')
+    ]
+  });
 
-  res.status(201).json(bici);
+  Bicicleta.add(bici, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).end();
+    }
+    res.status(201).json(result);
+  });
 }
 
 exports.bicicleta_update = (req, res) => {
-  try {
-    let biciAEditar = Bicicleta.findById(parseInt(req.params.id));
+  Bicicleta.findById(parseInt(req.params.id), (err, result) => {
+    if (err) return res.status(err.name === 'DocumentNotFoundError' ? 404: 500).end();
+    if (req.body.id) result.biciId = parseInt(req.body.id);
+    if (req.body.color) result.color = req.body.color;
+    if (req.body.modelo) result.modelo = req.body.modelo;
+    if (req.body.lat) result.ubicacion[0] = req.body.lat;
+    if (req.body.lng) result.ubicacion[1] = req.body.lng;
 
-    if (req.body.id) biciAEditar.id = parseInt(req.body.id);
-    if (req.body.color) biciAEditar.color = req.body.color;
-    if (req.body.modelo) biciAEditar.modelo = req.body.modelo;
-    if (req.body.lat) biciAEditar.ubicacion[0] = req.body.lat;
-    if (req.body.lng) biciAEditar.ubicacion[1] = req.body.lng;
-
-    res.status(200).json(biciAEditar);
-  } catch (err) {
-    res.status(404).end();
-  }
+    result.save((err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).end();
+      }
+      res.status(200).json(result);
+    });
+  });
 }
 
 exports.bicicleta_delete = (req, res) => {
-  try {
-    Bicicleta.findById(parseInt(req.params.id));
-    Bicicleta.removeById(parseInt(req.params.id));
-
-    res.status(204).end(); 
-  } catch (err) {
-    res.status(404).end();
-  }
-
+  Bicicleta.removeById(parseInt(req.params.id), (err, result) => {
+    if (err) return res.status(err.name === 'DocumentNotFoundError' ? 404: 500).end();
+    res.status(204).end();
+  });
 }

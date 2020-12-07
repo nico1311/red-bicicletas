@@ -1,8 +1,12 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors'),
+  cookieParser = require('cookie-parser'),
+  dotenv = require('dotenv'),
+  express = require('express'),
+  path = require('path'),
+  logger = require('morgan'),
+  mongoose = require('mongoose');
+
+dotenv.config();
 
 const indexRouter = require('./routes/index'),
   usersRouter = require('./routes/users'),
@@ -10,6 +14,20 @@ const indexRouter = require('./routes/index'),
   bicicletasApiRouter = require('./routes/api/bicicletas');
 
 var app = express();
+
+mongoose.connect(process.env.MONGODB, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error: '));
+
+db.once('open', () => {
+  console.log('[MongoDB] Connected!');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,37 +1,49 @@
-const Bicicleta = function (id, color, modelo, ubicacion) {
-  this.id = id;
-  this.color = color;
-  this.modelo = modelo;
-  this.ubicacion = ubicacion;
-}
+const { Schema, model } = require('mongoose');
 
-Bicicleta.prototype.toString = function () {
-  return `id: ${this.id}, color: ${this.color}`;
-}
-
-Bicicleta.allBicis = [];
-
-Bicicleta.add = function (bici) {
-  Bicicleta.allBicis.push(bici);
-}
-
-Bicicleta.findById = function (id) {
-  let bici = Bicicleta.allBicis.find(x => x.id === id);
-  if (bici) {
-    return bici;
-  } else {
-    throw new Error(`No existe bicicleta con el ID ${id}`);
-  }
-}
-
-Bicicleta.removeById = function (id) {
-  for (let i = 0; i < Bicicleta.allBicis.length; i++) {
-    let bici = Bicicleta.allBicis[i];
-    if (bici.id === id) {
-      Bicicleta.allBicis.splice(i, 1);
-      break;
+const BicicletaSchema = new Schema({
+  biciId: Number,
+  color: String,
+  modelo: String,
+  ubicacion: {
+    type: [Number],
+    index: {
+      type: '2dsphere',
+      sparse: true
     }
   }
-}
+});
 
-module.exports = Bicicleta;
+BicicletaSchema.statics.createInstance = function(biciId, color, modelo, ubicacion) {
+  return new this({
+    biciId: biciId,
+    color: color,
+    modelo: modelo,
+    ubicacion: ubicacion
+  });
+};
+
+BicicletaSchema.methods.toString = function() {
+  return `id: ${this.biciId}, color: ${this.color}`;
+};
+
+BicicletaSchema.statics.allBicis = function(cb) {
+  return this.find({}, cb);
+};
+
+BicicletaSchema.statics.add = function(bici, cb) {
+  return this.create(bici, cb);
+};
+
+BicicletaSchema.statics.findById = function(biciId, cb) {
+  return this.findOne({
+    biciId: biciId
+  }, cb).orFail();
+};
+
+BicicletaSchema.statics.removeById = function(biciId, cb) {
+  return this.deleteOne({
+    biciId: biciId
+  }, cb).orFail();
+};
+
+module.exports = model('Bicicleta', BicicletaSchema);

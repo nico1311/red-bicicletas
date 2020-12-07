@@ -12,7 +12,7 @@ $.ajax({
 }).then((result) => {
   result.bicicletas.forEach((bici) => {
     L.marker(bici.ubicacion, {
-      title: bici.id
+      title: bici.biciId
     }).addTo(map);
   });
 });

@@ -5,11 +5,11 @@ block content
   h2 Editando bicicleta
   br
 
-  form(method='post', action=`/bicicletas/${bici.id}/update`)
+  form(method='post', action=`/bicicletas/${bici.biciId}/update`)
     div.form-row
       div.form-group.col-auto
         label(for='id')| ID
-        input#id.form-control(type='text', name='id', placeholder='ID', value=bici.id)
+        input#id.form-control(type='text', name='id', placeholder='ID', value=bici.biciId)
     div.form-row
       div.form-group.col-auto
         label(for='color')| Color
