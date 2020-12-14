@@ -1,16 +1,9 @@
 const axios = require('axios').default;
-
 const server = require('../../bin/www');
-const Bicicleta = require('../../models/bicicleta');
 
 describe('API Bicicletas', () => {
   describe('/bicicletas', () => {
     it('GET devuelve status 200', (done) => {
-      expect(Bicicleta.allBicis.length).toBe(0);
-
-      const bici1 = new Bicicleta(1, 'Verde', 'Urbana', [-34.6086268, -58.3922607]);
-      Bicicleta.add(bici1);
-
       axios.get('http://localhost:3000/api/bicicletas').then((response) => {
         expect(response.status).toBe(200);
         done();
@@ -21,55 +14,53 @@ describe('API Bicicletas', () => {
   describe('/bicicletas/create', () => {
     it('POST devuelve 201 y crea la bicicleta', (done) => {
       axios.post('http://localhost:3000/api/bicicletas/create', {
-        id: 10,
+        id: 100,
         color: 'Rojo',
         modelo: 'Urbana',
-        lat: -34.6086268,
-        lng: -58.3922607
+        lat: '-34.6086268',
+        lng: '-58.3922607'
       }).then((response) => {
         expect(response.status).toBe(201);
-        expect(Bicicleta.findById(10).color).toBe('Rojo');
+        expect(response.data.color).toBe('Rojo');
         done();
       });
     });
   });
 
   describe('/bicicletas/update', () => {
-    it('POST /bicicletas/10/update actualiza una bicicleta existente', (done) => {
-      axios.post('http://localhost:3000/api/bicicletas/10/update', {
+    it('POST /bicicletas/100/update actualiza una bicicleta existente', (done) => {
+      axios.post('http://localhost:3000/api/bicicletas/100/update', {
         color: 'Negro'
       }).then((response) => {
         expect(response.status).toBe(200);
-        expect(Bicicleta.findById(10).color).toBe('Negro');
+        expect(response.data.color).toBe('Negro');
         done();
       });
     });
 
-    it('editar una bicicleta inexistente retorna 404', (done) => {
-      axios.post('http://localhost:3000/api/bicicletas/7/update', {
-        color: 'Negro'
-      }).catch((err) => {
-        expect(err.response.status).toBe(404);
-        done();
-      });
+    it('editar una bicicleta inexistente retorna 404', () => {
+      return expectAsync(
+        axios.post('http://localhost:3000/api/bicicletas/999/update', {
+          color: 'Negro'
+        })
+      ).toBeRejectedWithError('Request failed with status code 404')
     });
   });
 
   describe('/bicicletas/delete', () => {
-    it('POST /bicicletas/10/delete borra la bicicleta con ID 10', (done) => {
-      expect(Bicicleta.allBicis.length).toBe(2);
-      axios.post('http://localhost:3000/api/bicicletas/10/delete').then((response) => {
+    it('POST /bicicletas/10/delete borra la bicicleta con ID 100', (done) => {
+      axios.post('http://localhost:3000/api/bicicletas/100/delete').then((response) => {
         expect(response.status).toBe(204);
-        expect(Bicicleta.allBicis.length).toBe(1);
         done();
       });
     });
 
-    it('borrar una bicicleta inexistente retorna 404', (done) => {
-      axios.post('http://localhost:3000/api/bicicletas/7/delete').catch((err) => {
-        expect(err.response.status).toBe(404);
-        done();
-      });
+    it('borrar una bicicleta inexistente retorna 404', () => {
+      return expectAsync(
+        axios.post('http://localhost:3000/api/bicicletas/999/delete', {
+          color: 'Negro'
+        })
+      ).toBeRejectedWithError('Request failed with status code 404')
     });
   });
 });

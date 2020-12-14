@@ -6,6 +6,7 @@ dotenv.config();
 describe('Testing Bicicletas', () => {
   beforeAll((done) => {
     mongoose.connect(process.env.MONGODB_TEST, {
+      useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true
     });

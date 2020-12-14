@@ -11,7 +11,8 @@ dotenv.config();
 const indexRouter = require('./routes/index'),
   usersRouter = require('./routes/users'),
   bicicletasRouter = require('./routes/bicicletas'),
-  bicicletasApiRouter = require('./routes/api/bicicletas');
+  bicicletasApiRouter = require('./routes/api/bicicletas'),
+  usuariosApiRouter = require('./routes/api/usuarios');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/bicicletas', bicicletasRouter);
 app.use('/api/bicicletas', bicicletasApiRouter);
+app.use('/api/usuarios', usuariosApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
