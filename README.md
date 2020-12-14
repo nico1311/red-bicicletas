@@ -1,23 +1,35 @@
 ## Red Bicicletas
 La primera comunidad online de ciclistas urbanos.
 
-### Configuraci髇 del entorno
+### Configuraci贸n del entorno
 1. Clonar el repositorio
-2. Instalar m骴ulos NPM ejecutando `npm install`
-3. Iniciar el servidor con `npm start` (o `npm run devstart` con auto-reload mediante nodemon)
+2. Instalar m贸dulos NPM ejecutando `npm install`
+3. Crear un archivo `.env` con las variables de entorno `MONGODB` y `MONGODB_TEST`, cuyos valores deben ser las URL de la base de datos utilizada para la aplicaci贸n y para los tests, respectivamente.
+4. Iniciar el servidor con `npm start` (o `npm run devstart` con auto-reload mediante nodemon)
 
 ### Endpoints de API
 * GET `/api/bicicletas`: Devuelve la lista de bicicletas.
-* GET `/api/bicicletas/<id>`: Devuelve los detalles de la bicicleta con el ID especificado. Si no se encuentra, devuelve c骴igo de estado `404 Not Found`.
-* POST `/api/bicicletas/create`: A馻de una bicicleta. Par醡etros (body tipo JSON):
+* GET `/api/bicicletas/<id>`: Devuelve los detalles de la bicicleta con el ID especificado. Si no se encuentra, devuelve c贸digo de estado `404 Not Found`.
+* POST `/api/bicicletas/create`: A帽ade una bicicleta. Par谩metros (body tipo JSON):
 	* `id` (int): ID de la bicicleta
 	* `color` (string): Color de la bicicleta 
 	* `modelo` (string): Modelo de la bicicleta
 	* `lat` y `lng` (int): Coordenadas
-Devuelve c骴igo de estado `201 Created` si la creaci髇 fue exitosa.
+Devuelve c贸digo de estado `201 Created` si la creaci贸n fue exitosa.
 * POST `/api/bicicletas/<id>/update`: Actualiza los datos de una bicicleta.
-	* Acepta los mismos par醡etros del endpoint `create`. Al actualizar datos, pueden volver a especificarse todos los datos o solo los que sean necesarios actualizar.
-	* Si la actualizaci髇 fue exitosa, devuelve c骴igo `200` y como body de la respuesta, la bicicleta que acaba de ser actualizada. Si no se encuentra el ID especificado, devuelve `404 Not Found`.
+	* Acepta los mismos par谩metros del endpoint `create`. Al actualizar datos, pueden volver a especificarse todos los datos o solo los que sean necesarios actualizar.
+	* Si la actualizaci贸n fue exitosa, devuelve c贸digo `200` y como body de la respuesta, la bicicleta que acaba de ser actualizada. Si no se encuentra el ID especificado, devuelve `404 Not Found`.
 * POST `/api/bicicletas/<id>/delete`: Elimina una bicicleta.
-	* Si la eliminaci髇 fue exitosa, devuelve el c骴igo de estado `204 No Content`.
+	* Si la eliminaci贸n fue exitosa, devuelve el c贸digo de estado `204 No Content`.
 	* Si no se encuentra una bicicleta con el ID especificado, devuelve `404 Not Found`.
+* GET `/api/usuarios`: Devuelve la lista de usuarios.
+* POST `/api/usuarios/create`: Crea un usuario. Par谩metros:
+	* `nombre` (string): Nombre del usuario
+Devuelve c贸digo de estado `201 Created` si la creaci贸n fue exitosa.
+* POST `/api/usuarios/reservar`: Reserva una bicicleta. Par谩metros:
+	* `id` (string): ObjectId de Mongo correspondiente al usuario
+	* `biciId` (string): ObjectId de Mongo correspondiente a la bicicleta
+	* `desde` (string): Fecha de inicio de la reserva (AAAA-MM-DD)
+	* `hasta` (string): Fecha de fin de la reserva (AAAA-MM-DD)
+	* Si la reserva fue exitosa, devuelve `204 No Content`.
+	* Si no se encuentra el usuario o la bicicleta especificados, devuelve `404 Not Found`.
